@@ -29,19 +29,13 @@
 		"variables": {
 			"patterns": [{
 				"name": "namespaces.variables.gab",
-				"match": "\\b(?:[Vv]ariable|[Vv])\\.(?:[Gg]lobal|[Ll]ocal)\\.[A-Za-z][A-Za-z0-9]*"
+				"match": "\\b(?:[Vv]ariable|[Vv])\\.(?:[Gg]lobal|[Ll]ocal)\\.[A-Za-z][A-Za-z0-9]*\\.Declare"
 			}]
 		},
 		"strings": {
 			"name": "strings.gab",
 			"begin": "\"",
-			"end": "\"",
-			"patterns": [
-				{
-					"name": "constant.character.escape.gab",
-					"match": "\\\\."
-				}
-			]
+			"end": "\""
 		}
 	},
 	"scopeName": "source.gab"
