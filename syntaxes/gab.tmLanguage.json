@@ -32,7 +32,7 @@
 		"declare_variables": {
 			"patterns": [{
 				"name": "namespaces.declare_variables.gab",
-				"match": "\\b(?:[Vv]ariable|[Vv])\\.(?:[Gg]lobal|[Ll]ocal)\\.[A-Za-z][A-Za-z0-9_]*\\.Declare"
+				"match": "\\b(?:[Vv]ariable|[Vv])\\.(?:[Gg]lobal|[Ll]ocal)\\.[A-Za-z][A-Za-z0-9_]*\\.(Declare|Set)"
 			}]
 		},
 		"variables": {
