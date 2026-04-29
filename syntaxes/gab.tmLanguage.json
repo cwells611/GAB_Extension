@@ -3,8 +3,11 @@
 	"name": "GAB",
 	"patterns": [
 		{"include": "#comments"},
+		{"include": "#subroutines"},
 		{"include": "#strings"},
-		{"include": "#variables"},
+		{"include": "#user_variables"},
+		{"include": "#system_variables"},
+		{"include": "#logic"},
 		{"include": "#namespaces"}
 	],
 	"repository": {
@@ -23,19 +26,37 @@
 		"namespaces": {
 			"patterns": [{
 				"name": "namespaces.gab",
-				"match": "\\b(Function|function|Variable|variable|Gui|gui|GUI)\\b\\.|\\bF\\.|\\bV\\."
+				"match": "\\b(Function|function|Variable|variable|Gui|gui|GUI)\\b\\.|\\bF\\.|\\bV\\.|\\bf\\.|\\bv\\."
 			}]
 		},
-		"variables": {
+		"user_variables": {
 			"patterns": [{
 				"name": "namespaces.variables.gab",
-				"match": "\\b(?:[Vv]ariable|[Vv])\\.(?:[Gg]lobal|[Ll]ocal)\\.[A-Za-z][A-Za-z0-9]*\\.Declare"
+				"match": "\\b(?:[Vv]ariable|[Vv])\\.(?:[Gg]lobal|[Ll]ocal)\\.[A-Za-z][A-Za-z0-9_]*\\.Declare"
+			}]
+		},
+		"system_variables": {
+			"patterns": [{
+				"name": "namespaces.system_variables.gab",
+				"match": "\\b(?:[Vv]ariable|[Vv])\\.(?:|Screen|Data[tT]able|Ambient|Caller|Passed|Args|Enum|Color|ODBC|Printer|ASCII|Translation)\\.[A-Za-z][A-Za-z0-9]*"
 			}]
 		},
 		"strings": {
 			"name": "strings.gab",
 			"begin": "\"",
 			"end": "\""
+		}, 
+		"subroutines": {
+			"patterns": [{
+				"name": "namespaces.subroutines.gab",
+				"match": "\\b[Pp]rogram\\.[Ss]ub\\.[A-Za-z0-9_]+\\.([Ss]tart|[Ee]nd)"
+			}]
+		}, 
+		"logic": {
+			"patterns": [{
+				"name": "logic.gab",
+				"match": "\\b(?:[Tt]rue|[Ff]alse)\\b|\\.(?:Not|And|Exists)"
+			}]
 		}
 	},
 	"scopeName": "source.gab"

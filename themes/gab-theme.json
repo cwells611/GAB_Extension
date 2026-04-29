@@ -34,7 +34,25 @@
       }
     },
     {
-      "scope": "namespaces.variables",
+      "scope": "namespaces.user_variables",
+      "settings": {
+        "foreground": "#4ec9b0"
+      }
+    },
+    {
+      "scope": "namespaces.system_variables",
+      "settings": {
+        "foreground": "#4ec9b0"
+      }
+    },
+    {
+      "scope": "namespaces.subroutines",
+      "settings": {
+        "foreground": "#4ec9b0"
+      }
+    },
+    {
+      "scope": "logic",
       "settings": {
         "foreground": "#4ec9b0"
       }
