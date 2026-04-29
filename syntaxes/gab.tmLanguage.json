@@ -5,8 +5,8 @@
 		{"include": "#comments"},
 		{"include": "#subroutines"},
 		{"include": "#strings"},
-		{"include": "#user_variables"},
-		{"include": "#system_variables"},
+		{"include": "#declare_variables"},
+		{"include": "#variables"},
 		{"include": "#logic"},
 		{"include": "#namespaces"}
 	],
@@ -26,19 +26,19 @@
 		"namespaces": {
 			"patterns": [{
 				"name": "namespaces.gab",
-				"match": "\\b(Function|function|Variable|variable|Gui|gui|GUI)\\b\\.|\\bF\\.|\\bV\\.|\\bf\\.|\\bv\\."
+				"match": "\\b(Function|function|Variable|variable|Gui|gui|GUI)\\b\\.|\\b[Ff]\\.|\\b[Vv]\\."
 			}]
 		},
-		"user_variables": {
+		"declare_variables": {
 			"patterns": [{
-				"name": "namespaces.variables.gab",
+				"name": "namespaces.declare_variables.gab",
 				"match": "\\b(?:[Vv]ariable|[Vv])\\.(?:[Gg]lobal|[Ll]ocal)\\.[A-Za-z][A-Za-z0-9_]*\\.Declare"
 			}]
 		},
-		"system_variables": {
+		"variables": {
 			"patterns": [{
-				"name": "namespaces.system_variables.gab",
-				"match": "\\b(?:[Vv]ariable|[Vv])\\.(?:|Screen|Data[tT]able|Ambient|Caller|Passed|Args|Enum|Color|ODBC|Printer|ASCII|Translation)\\.[A-Za-z][A-Za-z0-9]*"
+				"name": "namespaces.variables.gab",
+				"match": "\\b(?:[Vv]ariable|[Vv])\\.(?:[Ll]ocal|[Gg]lobal|Screen|Data[tT]able|Data[Vv]iew|Ambient|Caller|Passed|Args|Enum|Color|ODBC|Printer|ASCII|Translation)\\.[A-Za-z][A-Za-z0-9]*"
 			}]
 		},
 		"strings": {

@@ -34,13 +34,13 @@
       }
     },
     {
-      "scope": "namespaces.user_variables",
+      "scope": "namespaces.declare_variables",
       "settings": {
         "foreground": "#4ec9b0"
       }
     },
     {
-      "scope": "namespaces.system_variables",
+      "scope": "namespaces.variables",
       "settings": {
         "foreground": "#4ec9b0"
       }
