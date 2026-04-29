@@ -2,7 +2,7 @@
   "name": "GAB Theme",
   "type": "dark",
   "colors": {
-    "editor.background": "#1e1e1e",
+    "editor.background": "#2b2b2b",
     "editor.foreground": "#d4d4d4",
     "editorCursor.foreground": "#ffffff",
     "editor.lineHighlightBackground": "#2a2a2a",
@@ -12,13 +12,13 @@
     {
       "scope": "comments",
       "settings": {
-        "foreground": "#6a9955"
+        "foreground": "#57a64b"
       }
     },
     {
       "scope": "strings",
       "settings": {
-        "foreground": "#d48220"
+        "foreground": "#d69d82"
       }
     },
     {
@@ -30,13 +30,13 @@
     {
       "scope": "namespaces",
       "settings": {
-        "foreground": "#2a7d2e"
+        "foreground": "#4ec9b0"
       }
     },
     {
       "scope": "namespaces.variables",
       "settings": {
-        "foreground": "#2a7d2e"
+        "foreground": "#4ec9b0"
       }
     }
   ]
