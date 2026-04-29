@@ -1,0 +1,34 @@
+{
+  "name": "gab-syntax-highlighting",
+  "displayName": "GAB Syntax Highlighting",
+  "description": "Extension that gives syntax highlighting for GAB ",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.116.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "gab",
+      "aliases": ["GAB", "gab"],
+      "extensions": [".g2u",".g2p",".g2c",".gas"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "gab",
+      "scopeName": "source.gab",
+      "path": "./syntaxes/gab.tmLanguage.json"
+    }],
+    "themes": [{
+      "label": "GAB Theme",
+      "uiTheme": "vs-dark",
+      "path": "./themes/gab-theme.json" 
+    }]
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  }
+}

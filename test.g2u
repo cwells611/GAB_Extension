@@ -1,0 +1,19 @@
+'test single line comment 
+
+'''
+test 
+block comment 
+'''
+
+"string" "string '{0}' \n"
+
+function.
+variable.
+gui.
+GUI. 
+F.Intrinsic
+
+variable. 
+Variable.
+V.Local.test
+v.Global.myglobalvar

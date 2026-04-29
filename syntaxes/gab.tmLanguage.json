@@ -1,0 +1,48 @@
+ {
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "GAB",
+	"patterns": [
+		{"include": "#comments"},
+		{"include": "#strings"},
+		{"include": "#variables"},
+		{"include": "#namespaces"}
+	],
+	"repository": {
+		"comments": {
+			"patterns": [{
+				"name": "comments.block.gab",
+				"begin": "'''",
+				"end": "'''"
+			}, 
+			{
+				"name": "comments.line.gab",
+				"begin": "'",
+				"end": "$"
+			}]
+		},
+		"namespaces": {
+			"patterns": [{
+				"name": "namespaces.gab",
+				"match": "\\b(Function|function|Variable|variable|Gui|gui|GUI)\\b\\.|\\bF\\.|\\bV\\."
+			}]
+		},
+		"variables": {
+			"patterns": [{
+				"name": "namespaces.variables.gab",
+				"match": "\\b(?:[Vv]ariable|[Vv])\\.(?:[Gg]lobal|[Ll]ocal)\\.[A-Za-z][A-Za-z0-9]*"
+			}]
+		},
+		"strings": {
+			"name": "strings.gab",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.gab",
+					"match": "\\\\."
+				}
+			]
+		}
+	},
+	"scopeName": "source.gab"
+}
