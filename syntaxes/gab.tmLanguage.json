@@ -38,7 +38,7 @@
 		"variables": {
 			"patterns": [{
 				"name": "namespaces.variables.gab",
-				"match": "\\b(?:[Vv]ariable|[Vv])\\.(?:[Ll]ocal|[Gg]lobal|Screen|Data[tT]able|Data[Vv]iew|Ambient|Caller|Passed|Args|Enum|Color|ODBC|Printer|ASCII|Translation)\\.[A-Za-z][A-Za-z0-9]*"
+				"match": "\\b(?:[Vv]ariable|[Vv])\\.(?:[Ll]ocal|[Gg]lobal|Screen|Data[tT]able|Data[Vv]iew|Ambient|Caller|Passed|Args|Enum|Color|ODBC|Printer|ASCII|Translation)\\.[A-Za-z][A-Za-z0-9_]*"
 			}]
 		},
 		"strings": {
