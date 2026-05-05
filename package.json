@@ -10,25 +10,48 @@
     "Programming Languages"
   ],
   "contributes": {
-    "languages": [{
-      "id": "gab",
-      "aliases": ["GAB", "gab"],
-      "extensions": [".g2u",".g2p",".g2c",".gas"],
-      "configuration": "./language-configuration.json"
-    }],
-    "grammars": [{
-      "language": "gab",
-      "scopeName": "source.gab",
-      "path": "./syntaxes/gab.tmLanguage.json"
-    }],
-    "themes": [{
-      "label": "GAB Theme",
-      "uiTheme": "vs-dark",
-      "path": "./themes/gab-theme.json" 
-    }]
+    "languages": [
+      {
+        "id": "gab",
+        "aliases": [
+          "GAB",
+          "gab"
+        ],
+        "extensions": [
+          ".g2u",
+          ".g2p",
+          ".g2c",
+          ".gas"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "gab",
+        "scopeName": "source.gab",
+        "path": "./syntaxes/gab.tmLanguage.json"
+      }
+    ],
+    "themes": [
+      {
+        "label": "GAB Theme",
+        "uiTheme": "vs-dark",
+        "path": "./themes/gab-theme.json"
+      }
+    ]
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/cwells611/GAB_Extension.git"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.118.0",
+    "esbuild": "^0.28.0",
+    "typescript": "^6.0.3"
+  }, 
+  "scripts": {
+    "build": "tsc", 
+    "watch": "tsc --watch" 
   }
 }
