@@ -44,6 +44,25 @@ export function createWebViewPanel() {
     });
 }
 
+function checkColor(scope: string, defaultColor: string): string {
+    let settings: Record<string, any> =vscode.workspace.getConfiguration('editor').get('tokenColorCustomizations') || {};
+    let color: string = defaultColor;
+    //if there are no settings return default color 
+    if(!settings['[GAB Theme]']) {
+        return color;
+    }
+    //loop through existing rules to see if there is one for the given scope 
+    let rules: any[] = settings['[GAB Theme]'].textMateRules;
+    for(let rule of rules) {
+        let index: number = rules.findIndex(rule => rule.scope === scope); 
+        if(index != -1) {
+            color = rule.settings.foreground;
+            break; 
+        }
+    }
+    return color; 
+}
+
 //get the HTML content for the webview (1 labeled color input for each scope in gab-theme) 
 //add event listeners to all inputs of type color to send message of scope and color back to extension
 export function getWebviewContent() {
@@ -58,34 +77,34 @@ export function getWebviewContent() {
     <h3>Editor</h3>
     <div id="editor-colors">
         <label for="editor.background">Background: </label>
-        <input type="color" id="editor.background" name="editor.background" value="#2b2b2b">
+        <input type="color" id="editor.background" name="editor.background" value="${checkColor('editor.background', '#2b2b2b')}">
         <br>
         <label for="editor.foreground">Foreground: </label>
-        <input type="color" id="editor.foreground" name="editor.foreground" value="#d4d4d4">
+        <input type="color" id="editor.foreground" name="editor.foreground" value="${checkColor('editor.foreground', '#d4d4d4')}">
         <br>
     </div>
     <h3>GAB</h3>
     <div id="gab-colors">
         <label for="comments">Comments: </label>
-        <input type="color" id="comments" name="comments" value="#57a64b">
+        <input type="color" id="comments" name="comments" value="${checkColor('comments', '#57a64b')}">
         <br>
         <label for="strings">Strings: </label>
-        <input type="color" id="strings" name="strings" value="#d69d82">
+        <input type="color" id="strings" name="strings" value="${checkColor('strings', '#d69d82')}">
         <br>
         <label for="constant.character.escape">Escape Characters: </label>
-        <input type="color" id="constant.character.escape" name="constant.character.escape" value="#2938d9">
+        <input type="color" id="constant.character.escape" name="constant.character.escape" value="${checkColor('constant.character.escape', '#2938d9')}">
         <br>
         <label for="namespaces">Namespaces: </label>
-        <input type="color" id="namespaces" name="namespaces" value="#4ec9b0">
+        <input type="color" id="namespaces" name="namespaces" value="${checkColor('namespaces', '#4ec9b0')}">
         <br>
         <label for="namespaces.declare_variables">Declaring Variables: </label>
-        <input type="color" id="namespaces.declare_variables" name="namespaces.declare_variables" value="#4ec9b0">
+        <input type="color" id="namespaces.declare_variables" name="namespaces.declare_variables" value="${checkColor('namespaces.declare_variables', '#4ec9b0')}">
         <br>
         <label for="namespaces.variables">Variables: </label>
-        <input type="color" id="namespaces.variables" name="namespaces.variables" value="#4ec9b0">
+        <input type="color" id="namespaces.variables" name="namespaces.variables" value="${checkColor('namespaces.variables', '#4ec9b0')}">
         <br>
         <label for="namespaces.subroutines">Subroutines: </label>
-        <input type="color" id="namespaces.subroutines" name="namespaces.subroutines" value="#4ec9b0">
+        <input type="color" id="namespaces.subroutines" name="namespaces.subroutines" value="${checkColor('namespaces.subroutines', '#4ec9b0')}">
     </div>
     <script>
         (function() {

@@ -48,11 +48,14 @@ function activate(context) {
 }
 //create a webview panel 
 function createWebViewPanel() {
-    const colorPanel = vscode.window.createWebviewPanel('gab-syntax-highlighting', 'GAB Syntax Highlighting Customization', vscode.ViewColumn.One, { enableScripts: true });
+    const colorPanel = vscode.window.createWebviewPanel('gab-syntax-highlighting', 'GAB Syntax Highlighting Customization', vscode.ViewColumn.Beside, { enableScripts: true });
+    //check to see if settings.json already has colors and set color inputs in HTML
+    let existingColors = checkColors();
     //set HTML content for the webview
-    colorPanel.webview.html = getWebviewContent();
+    colorPanel.webview.html = getWebviewContent(existingColors);
     //check to see if we have recieved a message from the webview
     colorPanel.webview.onDidReceiveMessage(message => {
+        //get the editor config from the settings.json
         let editorConfig = vscode.workspace.getConfiguration('editor').get('tokenColorCustomizations') || {};
         //if GAB Theme does not exist in setting.json create it and textmaterules as {} and []
         if (!editorConfig['[GAB Theme]']) {
@@ -72,11 +75,24 @@ function createWebViewPanel() {
         editorConfig['[GAB Theme]'].textMateRules = rules;
         //update the settings.json with the new editorConfig
         vscode.workspace.getConfiguration('editor').update('tokenColorCustomizations', editorConfig, vscode.ConfigurationTarget.Global);
-        vscode.window.showInformationMessage('Received message from webview:', JSON.stringify(editorConfig));
     });
 }
+function checkColors() {
+    let existingColors = [];
+    let settings = vscode.workspace.getConfiguration('editor').get('tokenColorCustomizations') || {};
+    if (!settings['[GAB Theme]']) {
+        return existingColors;
+    }
+    //look through existing rules and add to return array 
+    let rules = settings['[GAB Theme]'].textMateRules;
+    for (let rule of rules) {
+        existingColors.push(rule);
+    }
+    return existingColors;
+}
 //get the HTML content for the webview (1 labeled color input for each scope in gab-theme) 
-function getWebviewContent() {
+//add event listeners to all inputs of type color to send message of scope and color back to extension
+function getWebviewContent(colors) {
     return `<!DOCTYPE html>
     <html lang="en">
     <head>
