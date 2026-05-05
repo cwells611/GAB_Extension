@@ -51,14 +51,11 @@ function checkColor(scope: string, defaultColor: string): string {
     if(!settings['[GAB Theme]']) {
         return color;
     }
-    //loop through existing rules to see if there is one for the given scope 
+    //look for passed scope in in rules  
     let rules: any[] = settings['[GAB Theme]'].textMateRules;
-    for(let rule of rules) {
-        let index: number = rules.findIndex(rule => rule.scope === scope); 
-        if(index != -1) {
-            color = rule.settings.foreground;
-            break; 
-        }
+    let index: number = rules.findIndex(rules => rules.scope === scope); 
+    if(index != -1) {
+        color = rules[index].settings.foreground;
     }
     return color; 
 }
