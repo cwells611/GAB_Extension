@@ -4,7 +4,7 @@
         "module": "CommonJS",
         "outDir": "./out",
         "rootDir": "./src",
-        "lib": ["ES2020"],
+        "lib": ["ES2020", "DOM"],
         "strict": true,
         "sourceMap": true,
         "skipLibCheck": true

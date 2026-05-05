@@ -3,8 +3,9 @@
   "displayName": "GAB Syntax Highlighting",
   "description": "Extension that gives syntax highlighting for GAB ",
   "version": "0.0.1",
+  "main": "./out/extension.js",
   "engines": {
-    "vscode": "^1.105.0"
+    "vscode": "^1.80.0"
   },
   "categories": [
     "Programming Languages"
@@ -39,6 +40,12 @@
         "uiTheme": "vs-dark",
         "path": "./themes/gab-theme.json"
       }
+    ],
+    "commands": [
+      {
+        "command": "gab.customizeTheme",
+        "title": "Customize GAB Theme"
+      }
     ]
   },
   "repository": {
@@ -46,12 +53,13 @@
     "url": "https://github.com/cwells611/GAB_Extension.git"
   },
   "devDependencies": {
-    "@types/vscode": "^1.118.0",
+    "@types/vscode": "^1.80.0",
     "esbuild": "^0.28.0",
     "typescript": "^6.0.3"
   }, 
   "scripts": {
     "build": "tsc", 
     "watch": "tsc --watch" 
-  }
+  }, 
+  "activationEvents": []
 }
