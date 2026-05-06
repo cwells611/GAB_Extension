@@ -53,6 +53,18 @@ function createWebViewPanel() {
     colorPanel.webview.html = getWebviewContent();
     //check to see if we have recieved a message from the webview
     colorPanel.webview.onDidReceiveMessage(message => {
+        //if the reset button is clicked, reset the colors to the default colors
+        if (message.reset) {
+            const editorConfig = vscode.workspace.getConfiguration('editor').get('tokenColorCustomizations') || {};
+            editorConfig['[GAB Theme]'] = {};
+            editorConfig['[GAB Theme]'].textMateRules = [];
+            vscode.workspace.getConfiguration('editor').update('tokenColorCustomizations', editorConfig, vscode.ConfigurationTarget.Global);
+            //post a message back to the webview to update color inputs 
+            colorPanel.webview.postMessage({
+                reset: true
+            });
+            return;
+        }
         //get the editor config from the settings.json
         let editorConfig = vscode.workspace.getConfiguration('editor').get('tokenColorCustomizations') || {};
         //if GAB Theme does not exist in setting.json create it and textmaterules as {} and []
@@ -128,10 +140,24 @@ function getWebviewContent() {
     <input type="color" id="namespaces.variables" name="namespaces.variables" value="${checkColor('namespaces.variables', '#4ec9b0')}">
     <label for="namespaces.subroutines">Subroutines: </label>
     <input type="color" id="namespaces.subroutines" name="namespaces.subroutines" value="${checkColor('namespaces.subroutines', '#4ec9b0')}">
+    <label for="reset">Restore Defaults</label> 
+    <input type="button" id="reset" value="Restore Defaults">
     <script>
+        const vscode = acquireVsCodeApi();
+        const colorInputs = document.querySelectorAll('input[type="color"]');
+        const resetButton = document.getElementById('reset');
+        const defaultColors = {
+            'editor.background': '#2b2b2b',
+            'editor.foreground': '#d4d4d4',
+            'comments': '#57a64b',
+            'strings': '#d69d82',
+            'constant.character.escape': '#2938d9',
+            'namespaces': '#4ec9b0',
+            'namespaces.declare_variables': '#4ec9b0',
+            'namespaces.variables': '#4ec9b0',
+            'namespaces.subroutines': '#4ec9b0',
+        };
         (function() {
-            const vscode = acquireVsCodeApi();
-            const colorInputs = document.querySelectorAll('input[type="color"]');
             colorInputs.forEach(input => {
                 input.addEventListener('change', () => {
                     const color = input.value;
@@ -143,6 +169,18 @@ function getWebviewContent() {
                 });
             });
         })();
+        resetButton.addEventListener('click', () => {
+            vscode.postMessage({
+                reset: true
+            });
+        });
+        window.addEventListener('message', event => {
+            if(event.data.reset) {
+                colorInputs.forEach(input => {
+                    input.value = defaultColors[input.name];
+                });
+            }  
+        });
     </script>
     </body>
     </html>`;
