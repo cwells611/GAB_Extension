@@ -21,45 +21,62 @@ export function createWebViewPanel() {
     colorPanel.webview.html = getWebviewContent();
     //check to see if we have recieved a message from the webview
     colorPanel.webview.onDidReceiveMessage(message => {
-        //get the editor config from the settings.json
-        let editorConfig: Record<string, any> = vscode.workspace.getConfiguration('editor').get('tokenColorCustomizations') || {};
+        //get the gab theme config from the settings.json
+        let gabThemeConfig: Record<string, any> = vscode.workspace.getConfiguration('editor').get('tokenColorCustomizations') || {};
+        //get the editor settings from the settings.json
+        let editorConfig: Record<string, any> = vscode.workspace.getConfiguration('workbench').get('colorCustomizations') || {};
         //if the reset button is clicked, reset the colors to the default colors
         if(message.reset) {
+            gabThemeConfig['[GAB Theme]'] = {};
+            gabThemeConfig['[GAB Theme]'].textMateRules = [];
             editorConfig['[GAB Theme]'] = {};
-            editorConfig['[GAB Theme]'].textMateRules = [];
-            vscode.workspace.getConfiguration('editor').update('tokenColorCustomizations', editorConfig, vscode.ConfigurationTarget.Global);
+            vscode.workspace.getConfiguration('editor').update('tokenColorCustomizations', gabThemeConfig, vscode.ConfigurationTarget.Global);
+            vscode.workspace.getConfiguration('workbench').update('colorCustomizations', editorConfig, vscode.ConfigurationTarget.Global);
             //post a message back to the webview to update color inputs 
             colorPanel.webview.postMessage({
                 reset: true
             });
             return;
         }
-        //if GAB Theme does not exist in setting.json create it and textmaterules as {} and []
-        if(!editorConfig['[GAB Theme]']) {
-            editorConfig['[GAB Theme]'] = {};
-            editorConfig['[GAB Theme]'].textMateRules = []; 
+        if(message.type === 'gab') {
+            //if GAB Theme does not exist in setting.json create it and textmaterules as {} and []
+            if(!gabThemeConfig['[GAB Theme]']) {
+                gabThemeConfig['[GAB Theme]'] = {};
+                gabThemeConfig['[GAB Theme]'].textMateRules = []; 
+            }
+            //update the scope from the message with the new color 
+            let rules: any[] = gabThemeConfig['[GAB Theme]'].textMateRules; 
+            let index: number = rules.findIndex(rule => rule.scope === message.scope);
+            if(index == -1) {
+                rules.push({scope: message.scope, settings: {"foreground": message.color}}); 
+            }
+            else {
+                rules[index].settings = {"foreground": message.color};
+            }
+            //update object with new rules (color)
+            gabThemeConfig['[GAB Theme]'].textMateRules = rules;
+            //update the settings.json with the new editorConfig
+            vscode.workspace.getConfiguration('editor').update('tokenColorCustomizations', gabThemeConfig, vscode.ConfigurationTarget.Global);
         }
-        //update the scope from the message with the new color 
-        let rules: any[] = editorConfig['[GAB Theme]'].textMateRules; 
-        let index: number = rules.findIndex(rule => rule.scope === message.scope);
-        if(index == -1) {
-            rules.push({scope: message.scope, settings: message.settings}); 
+        if(message.type === 'editor') {
+            if(!editorConfig['[GAB Theme]']) {
+                editorConfig['[GAB Theme]'] = {};
+            }
+            editorConfig['[GAB Theme]'][message.scope] = message.color;
+            vscode.workspace.getConfiguration('workbench').update('colorCustomizations', editorConfig, vscode.ConfigurationTarget.Global);
         }
-        else {
-            rules[index].settings = message.settings;
-        }
-        //update object with new rules (color)
-        editorConfig['[GAB Theme]'].textMateRules = rules;
-        //update the settings.json with the new editorConfig
-        vscode.workspace.getConfiguration('editor').update('tokenColorCustomizations', editorConfig, vscode.ConfigurationTarget.Global);
     });
 }
 
 function checkColor(scope: string, defaultColor: string): string {
     let settings: Record<string, any> =vscode.workspace.getConfiguration('editor').get('tokenColorCustomizations') || {};
+    let editorSettings: Record<string, any> =vscode.workspace.getConfiguration('workbench').get('colorCustomizations') || {};
     let color: string = defaultColor;
     //if there are no settings return default color 
     if(!settings['[GAB Theme]']) {
+        return color;
+    }
+    if(!editorSettings['[GAB Theme]']) {
         return color;
     }
     //look for passed scope in in rules and return color to set the input value
@@ -67,6 +84,9 @@ function checkColor(scope: string, defaultColor: string): string {
     let index: number = rules.findIndex(rules => rules.scope === scope); 
     if(index != -1) {
         color = rules[index].settings.foreground;
+    }
+    if(editorSettings['[GAB Theme]'][scope]) {
+        color = editorSettings['[GAB Theme]'][scope];
     }
     return color; 
 }
@@ -115,10 +135,18 @@ export function getWebviewContent() {
                 width: 60px;
                 height: 28px;
                 border: 1px solid var(--vscode-panel-border);
-                border-radius: 3px;
+                border-radius: 8px;
                 cursor: pointer;
                 background: none;
                 padding: 2px;
+            }
+            input[type="color"]::-webkit-color-swatch-wrapper {
+                padding: 0;
+                border-radius: 6px;
+            }
+            input[type="color"]::-webkit-color-swatch {
+                border: none;
+                border-radius: 6px;
             }
             #reset {
                 margin-top: 16px;
@@ -126,7 +154,7 @@ export function getWebviewContent() {
                 background-color: var(--vscode-button-background);
                 color: var(--vscode-button-foreground);
                 border: none;
-                border-radius: 3px;
+                border-radius: 8px;
                 cursor: pointer;
                 font-family: var(--vscode-font-family);
                 font-size: var(--vscode-font-size);
@@ -204,9 +232,14 @@ export function getWebviewContent() {
                 input.addEventListener('change', () => {
                     const color = input.value;
                     const scope = input.name;
+                    let type = 'gab'; 
+                    if(scope === 'editor.background' || scope === 'editor.foreground') {
+                        type = 'editor';
+                    }
                     vscode.postMessage({
+                        type: type,
                         scope: scope,
-                        settings: {"foreground": color}
+                        color: color
                     });
                 });
             });
