@@ -58,6 +58,7 @@ export function createWebViewPanel() {
             //update the settings.json with the new editorConfig
             vscode.workspace.getConfiguration('editor').update('tokenColorCustomizations', gabThemeConfig, vscode.ConfigurationTarget.Global);
         }
+        //update edit
         if(message.type === 'editor') {
             if(!editorConfig['[GAB Theme]']) {
                 editorConfig['[GAB Theme]'] = {};
