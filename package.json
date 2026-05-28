@@ -4,12 +4,13 @@
   "description": "Extension that gives syntax highlighting for GAB ",
   "version": "0.0.1",
   "main": "./out/extension.js",
+  "license": "MIT",
+  "categories": ["Programming Languages", "Themes"],
+  "icon": "images/gss.png",
+  "keywords": ["GAB", "GAB Syntax Highlighting", "GAB Theme", "GAB Syntax", "GAB Syntax Highlighting Theme"],
   "engines": {
     "vscode": "^1.80.0"
   },
-  "categories": [
-    "Programming Languages"
-  ],
   "contributes": {
     "languages": [
       {
@@ -59,7 +60,8 @@
   }, 
   "scripts": {
     "build": "tsc", 
-    "watch": "tsc --watch" 
+    "watch": "tsc --watch", 
+    "vscode:prepublish": "npm run build"
   }, 
-  "activationEvents": []
+  "activationEvents": ["onCommand:gab.customizeTheme"]
 }
