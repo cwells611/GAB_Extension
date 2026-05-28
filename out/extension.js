@@ -101,26 +101,19 @@ function createWebViewPanel() {
     });
 }
 function checkColor(scope, defaultColor) {
-    let settings = vscode.workspace.getConfiguration('editor').get('tokenColorCustomizations') || {};
+    let tokenSettings = vscode.workspace.getConfiguration('editor').get('tokenColorCustomizations') || {};
     let editorSettings = vscode.workspace.getConfiguration('workbench').get('colorCustomizations') || {};
-    let color = defaultColor;
-    //if there are no settings return default color 
-    if (!settings['[GAB Theme]']) {
-        return color;
+    const editorScope = scope.startsWith('editor.') || scope.startsWith('editorGutter') || scope.startsWith('editorLineNumber');
+    if (editorScope) {
+        const custom = editorSettings['[GAB Theme]']?.[scope];
+        return custom ?? defaultColor;
     }
-    if (!editorSettings['[GAB Theme]']) {
-        return color;
-    }
-    //look for passed scope in in rules and return color to set the input value
-    let rules = settings['[GAB Theme]'].textMateRules;
-    let index = rules.findIndex(rules => rules.scope === scope);
+    const rules = tokenSettings['[GAB Theme]']?.textMateRules || [];
+    const index = rules.findIndex(rule => rule.scope === scope);
     if (index != -1) {
-        color = rules[index].settings.foreground;
+        return rules[index].settings.foreground ?? defaultColor;
     }
-    if (editorSettings['[GAB Theme]'][scope]) {
-        color = editorSettings['[GAB Theme]'][scope];
-    }
-    return color;
+    return defaultColor;
 }
 //get the HTML content for the webview (1 labeled color input for each scope in gab-theme) 
 //add event listeners to all inputs of type color to send message of scope and color back to extension
@@ -208,6 +201,26 @@ function getWebviewContent() {
             <label for="editor.foreground">Foreground</label>
             <input type="color" id="editor.foreground" name="editor.foreground" value="${checkColor('editor.foreground', '#d4d4d4')}">
         </div>
+        <div class="color-row">
+            <label for="editor.lineHighlightBackground">Active Line Background</label>
+            <input type="color" id="editor.lineHighlightBackground" name="editor.lineHighlightBackground" value="${checkColor('editor.lineHighlightBackground', '#2a2a2a')}">
+        </div>
+        <div class="color-row">
+            <label for="editor.selectionBackground">Selection Background</label>
+            <input type="color" id="editor.selectionBackground" name="editor.selectionBackground" value="${checkColor('editor.selectionBackground', '#264f78')}">
+        </div>
+        <div class="color-row">
+            <label for="editor.selectionHighlightBackground">Selection Highlight Background</label>
+            <input type="color" id="editor.selectionHighlightBackground" name="editor.selectionHighlightBackground" value="${checkColor('editor.selectionHighlightBackground', '#264f78')}">
+        </div>
+        <div class="color-row">
+            <label for="editorGutter.background">Editor Gutter Background</label>
+            <input type="color" id="editorGutter.background" name="editorGutter.background" value="${checkColor('editorGutter.background', '#264f78')}">
+        </div>
+        <div class="color-row">
+            <label for="editorLineNumber.foreground">Editor Line Number</label>
+            <input type="color" id="editorLineNumber.foreground" name="editorLineNumber.foreground" value="${checkColor('editorLineNumber.foreground', '#264f78')}">
+        </div>
     </div>
 
     <div class="section">
@@ -240,6 +253,10 @@ function getWebviewContent() {
             <label for="namespaces.subroutines">Subroutines</label>
             <input type="color" id="namespaces.subroutines" name="namespaces.subroutines" value="${checkColor('namespaces.subroutines', '#4ec9b0')}">
         </div>
+        <div class="color-row">
+            <label for="logic">Logic Operators</label>
+            <input type="color" id="logic" name="logic" value="${checkColor('logic', '#ffffff')}">
+        </div>
     </div>
 
     <button id="reset">Restore Defaults</button>
@@ -264,7 +281,7 @@ function getWebviewContent() {
                     const color = input.value;
                     const scope = input.name;
                     let type = 'gab'; 
-                    if(scope === 'editor.background' || scope === 'editor.foreground') {
+                    if(scope.startsWith('editor.') || scope.startsWith('editorGutter') || scope.startsWith('editorLineNumber')) {
                         type = 'editor';
                     }
                     vscode.postMessage({

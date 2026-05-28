@@ -26,19 +26,19 @@
 		"namespaces": {
 			"patterns": [{
 				"name": "namespaces.gab",
-				"match": "\\b(Function|function|Variable|variable|Gui|gui|GUI)\\b\\.|\\b[Ff]\\.|\\b[Vv]\\."
+				"match": "\\b(Function|function|Gui|gui|GUI)\\b\\.|\\b[Ff]\\."
 			}]
 		},
 		"declare_variables": {
 			"patterns": [{
 				"name": "namespaces.declare_variables.gab",
-				"match": "\\b(?:[Vv]ariable|[Vv])\\.(?:[Gg]lobal|[Ll]ocal)\\.[A-Za-z][A-Za-z0-9_]*\\.(Declare|Set)"
+				"match": "\\b(?:[Vv]ariable|[Vv])\\.(?:[Gg]lobal|[Ll]ocal|Passed)\\.[A-Za-z0-9][A-Za-z0-9_-]*\\.(Declare|Set)"
 			}]
 		},
 		"variables": {
 			"patterns": [{
 				"name": "namespaces.variables.gab",
-				"match": "\\b(?:[Vv]ariable|[Vv])\\.(?:[Ll]ocal|[Gg]lobal|Screen|Data[tT]able|Data[Vv]iew|Ambient|Caller|Passed|Args|Enum|Color|ODBC|Printer|ASCII|Translation)\\.[A-Za-z][A-Za-z0-9_]*"
+				"match": "\\b(?:[Vv]ariable|[Vv])\\.(?:[Ll]ocal|[Gg]lobal|Screen|Data[tT]able|Data[Vv]iew|Ambient|Caller|Passed|Args|Enum|Color|ODBC|Printer|ASCII|Translation)\\.[A-Za-z0-9][A-Za-z0-9_-]*"
 			}]
 		},
 		"strings": {
