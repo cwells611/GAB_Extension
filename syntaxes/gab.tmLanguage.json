@@ -2,9 +2,9 @@
 	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
 	"name": "GAB",
 	"patterns": [
+		{"include": "#strings"},
 		{"include": "#comments"},
 		{"include": "#subroutines"},
-		{"include": "#strings"},
 		{"include": "#declare_variables"},
 		{"include": "#variables"},
 		{"include": "#logic"},
@@ -13,14 +13,8 @@
 	"repository": {
 		"comments": {
 			"patterns": [{
-				"name": "comments.block.gab",
-				"begin": "'''",
-				"end": "'''"
-			}, 
-			{
 				"name": "comments.line.gab",
-				"begin": "'",
-				"end": "$"
+				"match": "^\\s*'.*$"
 			}]
 		},
 		"namespaces": {
